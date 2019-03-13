@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+    <head>
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    </head>
+    <body>
+      <div class="container" style="text-align: center">
+        <div class="jumbotron">
+            <h1 class="display-4">Hot Restaurant</h1>
+            <hr class="my-4">
+            <p class="lead">Make a Reservation</p>
+            <a class="btn btn-primary btn-lg" href="tables" role="button">View Reservations</a>
+            <a class="btn btn-primary btn-lg" href="/" role="button">Home</a>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h4>Table Reservation</h4>
+            </div>
+            <div class="card-body">
+                    <form role="form" style="text-align: left;">
+
+						<div class="form-group">
+							<label for="">Name</label>
+							<input type="text" class="form-control" id="name">
+						</div>
+
+						<div class="form-group">
+							<label for="">Phone Number</label>
+							<input type="text" class="form-control" id="number">
+						</span></div>
+
+						<div class="form-group">
+							<label for="">Email</label>
+							<input type="text" class="form-control" id="email">
+						</span></div>
+
+						<div class="form-group">
+							<label for="">Unique ID</label>
+							<input type="text" class="form-control" id="customerID">
+						</div>
+
+						<button type="submit" id="add-res" class="btn btn-primary submit">Submit</button>
+					</form>
+            </div>
+        </div>
+        <br>
+        <a href="api/tables">Tables API</a>
+        <a href="api/waitlist">Waitlist API</a>
+        <br>
+      </div>
+        <script src="reservation.js"></script>
+
+        <script
+        src="http://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+
+        <script type="text/javascript">
+            $("#add-res").on("click", function(event) {
+              event.preventDefault();
+              var reservation = {
+                name: $("#name").val().trim(),
+                number: $("#number").val().trim(),
+                email: $("#email").val().trim(),
+                customerID: $("#customerID").val().trim()
+              };
+
+              $.get("/api/tables")
+                .then(function(data) {
+                    if(data.length < 5) {
+                        $.post("/api/tables", reservation)
+                            .then(function(data) {
+                            alert("Adding reservation...");
+                        });
+                    } else {
+                        $.post("/api/waitlist", reservation)
+                            .then(function(data) {
+                            alert("Adding waitlistee...");
+                        });                        
+                    }
+                })
+            });
+          </script>
+    </body>
+</html>
